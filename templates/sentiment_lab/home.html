@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Lab</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 32px;
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 { text-align: center; color: #2c3e50; font-size: 24px; margin-bottom: 24px; }
+        h2 { color: #2c3e50; font-size: 18px; margin-top: 28px; border-top: 1px solid #eee; padding-top: 20px; }
+        form p { margin: 0 0 16px 0; }
+        form label { display: block; margin-bottom: 6px; font-weight: 600; color: #444; font-size: 14px; }
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #4a90d9;
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.15);
+        }
+        button {
+            background-color: #4a90d9;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover { background-color: #3a7bc0; }
+        .result-box {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+        .result-box p { margin: 6px 0; font-size: 14px; color: #333; }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+        .badge-positive { background-color: #e3f9e5; color: #1a7f37; }
+        .badge-negative { background-color: #fdecea; color: #c62828; }
+        .badge-neutral { background-color: #eef0f2; color: #555; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Sentiment Analyzer</h1>
+
+        <form method="POST" action="{% url 'sentiment-home' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Analyze</button>
+        </form>
+
+        {% if result %}
+            <h2>Result</h2>
+            <div class="result-box">
+                <p><strong>Your text:</strong> {{ result.text }}</p>
+                <p><strong>Polarity score:</strong> {{ result.polarity }}</p>
+                <p>
+                    <strong>Sentiment:</strong>
+                    {% if result.sentiment == "Positive" %}
+                        <span class="badge badge-positive">{{ result.sentiment }}</span>
+                    {% elif result.sentiment == "Negative" %}
+                        <span class="badge badge-negative">{{ result.sentiment }}</span>
+                    {% else %}
+                        <span class="badge badge-neutral">{{ result.sentiment }}</span>
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
