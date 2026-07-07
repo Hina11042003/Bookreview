@@ -1,3 +1,3 @@
-# Licence 
+# License 
 
-[MIT LICENCE](LICENCE)
+[MIT LICENSE](LICENSE)
